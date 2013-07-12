@@ -1,0 +1,49 @@
+# Contributor: chimeracoder <dev@chimeracoder.net>
+# Generator  : CPANPLUS::Dist::Arch 1.19
+
+pkgname='perl-role-identifiable'
+pkgver='0.005'
+pkgrel='1'
+pkgdesc="a thing with a list of tags"
+arch=('any')
+license=('PerlArtistic' 'GPL')
+options=('!emptydirs')
+depends=('perl')
+makedepends=('perl-moose')
+url='http://search.cpan.org/dist/Role-Identifiable'
+source=('http://search.cpan.org/CPAN/authors/id/R/RJ/RJBS/Role-Identifiable-0.005.tar.gz')
+md5sums=('ab9c638b5413c4eca9ac69017bafc715')
+sha512sums=('8503efa5c6c8256047e9c04c1a5cb39ac67e028f7d2576d4e798d897c05adb1d8e60e1d89cc5d7b60c32b47ec5bb6a39cb9e79728f971cadb46e3de30221ca89')
+_distdir="${srcdir}/Role-Identifiable-0.005"
+
+build() {
+  ( export PERL_MM_USE_DEFAULT=1 PERL5LIB=""                 \
+      PERL_AUTOINSTALL=--skipdeps                            \
+      PERL_MM_OPT="INSTALLDIRS=vendor DESTDIR='$pkgdir'"     \
+      PERL_MB_OPT="--installdirs vendor --destdir '$pkgdir'" \
+      MODULEBUILDRC=/dev/null
+
+    cd "$_distdir"
+    /usr/bin/perl Makefile.PL
+    make
+  )
+}
+
+check() {
+  cd "$_distdir"
+  ( export PERL_MM_USE_DEFAULT=1 PERL5LIB=""
+    make test
+  )
+}
+
+package() {
+  cd "$_distdir"
+  make install
+  find "$pkgdir" -name .packlist -o -name perllocal.pod -delete
+}
+
+# Local Variables:
+# mode: shell-script
+# sh-basic-offset: 2
+# End:
+# vim:set ts=2 sw=2 et:
