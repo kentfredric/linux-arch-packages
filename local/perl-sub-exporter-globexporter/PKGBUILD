@@ -17,6 +17,7 @@ sha512sums=('f73befe983050bbf7b0f416925a4bf059ad1c6531168f1810794b1e1e0e25c62fad
 _distdir="${srcdir}/Sub-Exporter-GlobExporter-0.002"
 
 build() {
+  _distdir="${srcdir}/Sub-Exporter-GlobExporter-0.002"
   ( export PERL_MM_USE_DEFAULT=1 PERL5LIB=""                 \
       PERL_AUTOINSTALL=--skipdeps                            \
       PERL_MM_OPT="INSTALLDIRS=vendor DESTDIR='$pkgdir'"     \
@@ -30,16 +31,18 @@ build() {
 }
 
 check() {
+  _distdir="${srcdir}/Sub-Exporter-GlobExporter-0.002"
   cd "$_distdir"
-  ( export PERL_MM_USE_DEFAULT=1 PERL5LIB=""
+  ( export PERL_MM_USE_DEFAULT=1 PERL5LIB="" HARNESS_OPTIONS=j10
     make test
   )
 }
 
 package() {
+  _distdir="${srcdir}/Sub-Exporter-GlobExporter-0.002"
   cd "$_distdir"
   make install
-  find "$pkgdir" -name .packlist -o -name perllocal.pod -delete
+  find "$pkgdir" -name perllocal.pod -delete
 }
 
 # Local Variables:
