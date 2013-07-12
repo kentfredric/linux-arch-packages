@@ -14,32 +14,30 @@ url='http://search.cpan.org/dist/String-Errf'
 source=('http://search.cpan.org/CPAN/authors/id/R/RJ/RJBS/String-Errf-0.006.tar.gz')
 md5sums=('ef5473bef7546d3ba7dd5ac53780f7d7')
 sha512sums=('5247c84f488d08138c2a69d523a2e11b15d6274b57d05cd2c5d8b926ed8c1f86405e33fa451705b001a2bcbcab1fcb3b9b4083244144f2a7e13c96b81f282528')
-_distdir="${srcdir}/String-Errf-0.006"
+_pkg_dir="String-Errf-${pkgver}"
 
 build() {
-  ( export PERL_MM_USE_DEFAULT=1 PERL5LIB=""                 \
+  export PERL_MM_USE_DEFAULT=1 PERL5LIB=""                 \
       PERL_AUTOINSTALL=--skipdeps                            \
       PERL_MM_OPT="INSTALLDIRS=vendor DESTDIR='$pkgdir'"     \
       PERL_MB_OPT="--installdirs vendor --destdir '$pkgdir'" \
       MODULEBUILDRC=/dev/null
 
-    cd "$_distdir"
-    /usr/bin/perl Makefile.PL
-    make
-  )
+  cd "${srcdir}/${_pkg_dir}"
+  /usr/bin/perl Makefile.PL || return 1
+  make || return 1
 }
 
 check() {
-  cd "$_distdir"
-  ( export PERL_MM_USE_DEFAULT=1 PERL5LIB=""
-    make test
-  )
+ cd "${srcdir}/${_pkg_dir}"
+ export PERL_MM_USE_DEFAULT=1 PERL5LIB="" HARNESS_OPTIONS=j10
+ make test || return 1
 }
 
 package() {
-  cd "$_distdir"
+  cd "${srcdir}/${_pkg_dir}"
   make install
-  find "$pkgdir" -name .packlist -o -name perllocal.pod -delete
+  find "$pkgdir" -name perllocal.pod -delete
 }
 
 # Local Variables:
