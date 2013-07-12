@@ -1,0 +1,36 @@
+# Maintainer: Kent Fredric <kentnl@cpan.org>
+# Previous Maintainer: Petrenko Alexey <alexey-p at uralweb dot ru>
+pkgname=perl-devel-nytprof
+pkgver=5.05
+pkgrel=1
+pkgdesc='Powerful fast feature-rich perl source code profiler'
+url='https://metacpan.org/release/Devel-NYTProf'
+depends=('perl' 'perl-json-any' 'perl-getopt-long' 'perl-test-simple>=0.84' 'perl-xsloader' 'perl-test-differences>=0.60')
+makedepends=('perl-extutils-makemaker')
+arch=('i686' 'x86_64')
+license=('GPL')
+options=('!emptydirs')
+source=("http://cpan.metacpan.org/authors/id/T/TI/TIMB/Devel-NYTProf-$pkgver.tar.gz")
+sha1sums=('92b1d093e5eed09852735bf14c9e25115884d20e')
+build() {
+  cd "$srcdir/Devel-NYTProf-$pkgver"
+
+  perl Makefile.PL INSTALLDIRS=vendor || return 1
+  make || return 1
+}
+
+check() {
+  cd "$srcdir/Devel-NYTProf-$pkgver"
+  HARNESS_OPTIONS=j10 make test || return 1
+}
+
+package() {
+  cd "$srcdir/Devel-NYTProf-$pkgver"
+
+  make DESTDIR="$pkgdir" install || return 1
+
+  # Removing unnecessary stuff
+  find "$pkgdir" -type f \
+	-name 'perllocal.pod' \
+	 -delete;
+}
