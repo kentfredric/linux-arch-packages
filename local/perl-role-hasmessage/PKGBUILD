@@ -14,32 +14,30 @@ url='http://search.cpan.org/dist/Role-HasMessage'
 source=('http://search.cpan.org/CPAN/authors/id/R/RJ/RJBS/Role-HasMessage-0.005.tar.gz')
 md5sums=('3b2ec687549ec209aa639f452b855af4')
 sha512sums=('249739c33a4958db5913cc19b2a58552ccfb91db6aad5511497ea9f1fccdf79a4001143d8a49f59cb7fbf848095980ff2778ec1847848a5973fe153c3b53e747')
-_distdir="${srcdir}/Role-HasMessage-0.005"
+_pkg_dir="Role-HasMessage-${pkgver}"
 
 build() {
-  ( export PERL_MM_USE_DEFAULT=1 PERL5LIB=""                 \
+  export PERL_MM_USE_DEFAULT=1 PERL5LIB=""                 \
       PERL_AUTOINSTALL=--skipdeps                            \
       PERL_MM_OPT="INSTALLDIRS=vendor DESTDIR='$pkgdir'"     \
       PERL_MB_OPT="--installdirs vendor --destdir '$pkgdir'" \
       MODULEBUILDRC=/dev/null
 
-    cd "$_distdir"
-    /usr/bin/perl Makefile.PL
-    make
-  )
+    cd "${srcdir}/${_pkg_dir}"
+    /usr/bin/perl Makefile.PL || return 1
+    make || return 1
 }
 
 check() {
-  cd "$_distdir"
-  ( export PERL_MM_USE_DEFAULT=1 PERL5LIB=""
-    make test
-  )
+  cd "${srcdir}/${_pkg_dir}"
+  export PERL_MM_USE_DEFAULT=1 PERL5LIB="" HARNESS_OPTIONS=j10
+  make test
 }
 
 package() {
-  cd "$_distdir"
+  cd "${srcdir}/${_pkg_dir}"
   make install
-  find "$pkgdir" -name .packlist -o -name perllocal.pod -delete
+  find "$pkgdir" -name perllocal.pod -delete
 }
 
 # Local Variables:
