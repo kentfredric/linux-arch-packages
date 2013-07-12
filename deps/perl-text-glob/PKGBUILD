@@ -1,0 +1,44 @@
+# Maintainer: jsteel <mail at jsteel dot org>
+# Contributor: Alan Young <harleypig@gmail.com>
+
+pkgname='perl-text-glob'
+pkgver='0.09'
+pkgrel='3'
+pkgdesc="match globbing patterns against text"
+arch=('any')
+license=('PerlArtistic' 'GPL')
+options=('!emptydirs')
+depends=('perl')
+url='http://search.cpan.org/dist/Text-Glob'
+source=('http://search.cpan.org/CPAN/authors/id/R/RC/RCLAMP/Text-Glob-0.09.tar.gz')
+md5sums=('1daa10e087f891c49b720a5c551a024b')
+
+build() {
+  ( export PERL_MM_USE_DEFAULT=1 PERL5LIB=""                 \
+      PERL_AUTOINSTALL=--skipdeps                            \
+      PERL_MM_OPT="INSTALLDIRS=vendor DESTDIR='$pkgdir'"     \
+      PERL_MB_OPT="--installdirs vendor --destdir '$pkgdir'" \
+      MODULEBUILDRC=/dev/null
+
+    cd "$srcdir"/Text-Glob-$pkgver
+
+    /usr/bin/perl Build.PL
+    /usr/bin/perl Build
+  )
+}
+
+check() {
+  cd "$srcdir"/Text-Glob-$pkgver
+
+  ( export PERL_MM_USE_DEFAULT=1 PERL5LIB=""
+    /usr/bin/perl Build test
+  )
+}
+
+package() {
+  cd "$srcdir"/Text-Glob-$pkgver
+
+  /usr/bin/perl Build install
+
+  find "$pkgdir" -name .packlist -o -name perllocal.pod -delete
+}
