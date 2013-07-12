@@ -8,24 +8,26 @@ pkgdesc="Autoboxed wrappers for Native Perl datatypes "
 arch=('any')
 license=('PerlArtistic' 'GPL')
 options=('!emptydirs')
-depends=('perl' 'perl-autobox>=2.23' 'perl-moose>=0.42' 'perl-test-exception>=0.21' 'perl6-junction>=1.40000')
+depends=('perl' 'perl-autobox>=2.23' 'perl-moose>=0.42' 'perl-test-exception>=0.21' 'perl-perl6-junction>=1.40000')
 
 url='http://search.cpan.org/dist/Moose-Autobox'
 
 source=('http://search.cpan.org/CPAN/authors/id/R/RJ/RJBS/Moose-Autobox-0.11.tar.gz')
 md5sums=('9d2e237c2cbe7e2cfe3afe8f0bbf75e7')
-
+_pkg_dir="Moose-Autobox-$pkgver"
 build() {
-  DIST_DIR="${srcdir}/Moose-Autobox-0.11"
-  export PERL_MM_USE_DEFAULT=1
-  {
-	cd "$DIST_DIR" &&
-    perl Makefile.PL INSTALLDIRS=vendor &&
-    make &&
-    make test &&
-    make DESTDIR="$pkgdir" install;
-  } || return 1;
-
-  find "$pkgdir" -name .packlist -o -name perllocal.pod -delete
+   cd "${srcdir}/${_pkg_dir}"
+   export PERL_MM_USE_DEFAULT=1
+   perl Makefile.PL INSTALLDIRS=vendor || return 1
+   make || return 1
 }
-
+check(){
+   cd "${srcdir}/${_pkg_dir}"
+   export HARNESS_OPTIONS=j10
+   make test
+}
+package(){
+   cd "${srcdir}/${_pkg_dir}"
+   make DESTDIR="$pkgdir" install || return 1;
+   find "$pkgdir" -name perllocal.pod -delete
+}
