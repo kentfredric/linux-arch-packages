@@ -1,0 +1,49 @@
+# Contributor: chimeracoder <dev@chimeracoder.net>
+# Generator  : CPANPLUS::Dist::Arch 1.19
+
+pkgname='perl-string-errf'
+pkgver='0.006'
+pkgrel='1'
+pkgdesc="a simple sprintf-like dialect"
+arch=('any')
+license=('PerlArtistic' 'GPL')
+options=('!emptydirs')
+depends=('perl-params-util' 'perl-string-formatter>=0.102081' 'perl-sub-exporter')
+makedepends=('perl-json>=2' 'perl-timedate')
+url='http://search.cpan.org/dist/String-Errf'
+source=('http://search.cpan.org/CPAN/authors/id/R/RJ/RJBS/String-Errf-0.006.tar.gz')
+md5sums=('ef5473bef7546d3ba7dd5ac53780f7d7')
+sha512sums=('5247c84f488d08138c2a69d523a2e11b15d6274b57d05cd2c5d8b926ed8c1f86405e33fa451705b001a2bcbcab1fcb3b9b4083244144f2a7e13c96b81f282528')
+_distdir="${srcdir}/String-Errf-0.006"
+
+build() {
+  ( export PERL_MM_USE_DEFAULT=1 PERL5LIB=""                 \
+      PERL_AUTOINSTALL=--skipdeps                            \
+      PERL_MM_OPT="INSTALLDIRS=vendor DESTDIR='$pkgdir'"     \
+      PERL_MB_OPT="--installdirs vendor --destdir '$pkgdir'" \
+      MODULEBUILDRC=/dev/null
+
+    cd "$_distdir"
+    /usr/bin/perl Makefile.PL
+    make
+  )
+}
+
+check() {
+  cd "$_distdir"
+  ( export PERL_MM_USE_DEFAULT=1 PERL5LIB=""
+    make test
+  )
+}
+
+package() {
+  cd "$_distdir"
+  make install
+  find "$pkgdir" -name .packlist -o -name perllocal.pod -delete
+}
+
+# Local Variables:
+# mode: shell-script
+# sh-basic-offset: 2
+# End:
+# vim:set ts=2 sw=2 et:
