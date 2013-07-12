@@ -1,0 +1,49 @@
+# Contributor: Anonymous
+# Generator  : CPANPLUS::Dist::Arch 1.25
+
+pkgname='perl-data-uuid'
+pkgver='1.219'
+pkgrel='1'
+pkgdesc="Globally/Universally Unique Identifiers (GUIDs/UUIDs)"
+arch=('i686' 'x86_64')
+license=('PerlArtistic' 'GPL')
+options=('!emptydirs')
+depends=('perl')
+makedepends=()
+url='http://search.cpan.org/dist/Data-UUID'
+source=('http://search.cpan.org/CPAN/authors/id/R/RJ/RJBS/Data-UUID-1.219.tar.gz')
+md5sums=('8ca1f802b40d9b563f4de26968677097')
+sha512sums=('b4a09c0615876b5d0c8304459eb54300fc7e4f808969e3ccc2a929e2d47159cf0aa55e501e8f2a2a795ec31d7e7701978fd4c834eda2c19abc7e131fcb39b35e')
+_distdir="Data-UUID-1.219"
+
+build() {
+  ( export PERL_MM_USE_DEFAULT=1 PERL5LIB=""                 \
+      PERL_AUTOINSTALL=--skipdeps                            \
+      PERL_MM_OPT="INSTALLDIRS=vendor DESTDIR='$pkgdir'"     \
+      PERL_MB_OPT="--installdirs vendor --destdir '$pkgdir'" \
+      MODULEBUILDRC=/dev/null
+
+    cd "$srcdir/$_distdir"
+    /usr/bin/perl Makefile.PL
+    make
+  )
+}
+
+check() {
+  cd "$srcdir/$_distdir"
+  ( export PERL_MM_USE_DEFAULT=1 PERL5LIB=""
+    make test
+  )
+}
+
+package() {
+  cd "$srcdir/$_distdir"
+  make install
+  find "$pkgdir" -name .packlist -o -name perllocal.pod -delete
+}
+
+# Local Variables:
+# mode: shell-script
+# sh-basic-offset: 2
+# End:
+# vim:set ts=2 sw=2 et:
