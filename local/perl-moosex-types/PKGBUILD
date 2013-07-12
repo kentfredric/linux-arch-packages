@@ -12,32 +12,30 @@ url='http://search.cpan.org/dist/MooseX-Types'
 source=('http://search.cpan.org/CPAN/authors/id/D/DR/DROLSKY/MooseX-Types-0.35.tar.gz')
 md5sums=('dff0152c0f89802fad5badffd3b465ec')
 sha512sums=('a3ad136054ac8f5b17d034e0d1a5319deafca1e932bc0ccc8ea56f6109cee9a24705c6f490fde6d894034227ed7fe8d1919e2a4ccb924c231863585226c6dc87')
-_distdir="${srcdir}/MooseX-Types-0.35"
+_pkg_dir="MooseX-Types"
 
 build() {
-  ( export PERL_MM_USE_DEFAULT=1 PERL5LIB=""                 \
-      PERL_AUTOINSTALL=--skipdeps                            \
-      PERL_MM_OPT="INSTALLDIRS=vendor DESTDIR='$pkgdir'"     \
-      PERL_MB_OPT="--installdirs vendor --destdir '$pkgdir'" \
-      MODULEBUILDRC=/dev/null
+  cd "${srcdir}/${_pkg_dir}-${pkgver}"
+  export PERL_MM_USE_DEFAULT=1 PERL5LIB=""                 \
+    PERL_AUTOINSTALL=--skipdeps                            \
+    PERL_MM_OPT="INSTALLDIRS=vendor DESTDIR='$pkgdir'"     \
+    PERL_MB_OPT="--installdirs vendor --destdir '$pkgdir'" \
+    MODULEBUILDRC=/dev/null
 
-    cd "$_distdir"
-    /usr/bin/perl Makefile.PL
-    make
-  )
+  /usr/bin/perl Makefile.PL || return 1
+  make || return 1
 }
 
 check() {
-  cd "$_distdir"
-  ( export PERL_MM_USE_DEFAULT=1 PERL5LIB=""
-    make test
-  )
+  export PERL_MM_USE_DEFAULT=1 PERL5LIB=""
+  cd "${srcdir}/${_pkg_dir}-${pkgver}"
+  make test || return 1
 }
 
 package() {
-  cd "$_distdir"
-  make install
-  find "$pkgdir" -name .packlist -o -name perllocal.pod -delete
+  cd "${srcdir}/${_pkg_dir}-${pkgver}"
+  make install || return 1
+  find "$pkgdir" -name perllocal.pod -delete
 }
 
 # Local Variables:
