@@ -14,9 +14,9 @@ url='http://search.cpan.org/dist/Log-Dispatchouli'
 source=('http://search.cpan.org/CPAN/authors/id/R/RJ/RJBS/Log-Dispatchouli-2.005.tar.gz')
 md5sums=('fe80cbdfdcfd485bf2b6d25bc9059a5a')
 sha512sums=('9a3f0ea9a3903079ca1db87cb37be06b41ee16564de322094bd342f48ed358be8d0fda820efbd3ba942d52c8662685226c3181c33241d704c016eb2e7575ee08')
-_distdir="${srcdir}/Log-Dispatchouli-2.005"
 
 build() {
+  _distdir="${srcdir}/Log-Dispatchouli-2.005"
   ( export PERL_MM_USE_DEFAULT=1 PERL5LIB=""                 \
       PERL_AUTOINSTALL=--skipdeps                            \
       PERL_MM_OPT="INSTALLDIRS=vendor DESTDIR='$pkgdir'"     \
@@ -30,6 +30,7 @@ build() {
 }
 
 check() {
+  _distdir="${srcdir}/Log-Dispatchouli-2.005"
   cd "$_distdir"
   ( export PERL_MM_USE_DEFAULT=1 PERL5LIB=""
     make test
@@ -37,6 +38,7 @@ check() {
 }
 
 package() {
+  _distdir="${srcdir}/Log-Dispatchouli-2.005"
   cd "$_distdir"
   make install
   find "$pkgdir" -name .packlist -o -name perllocal.pod -delete
