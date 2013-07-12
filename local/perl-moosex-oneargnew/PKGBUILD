@@ -14,32 +14,30 @@ url='http://search.cpan.org/dist/MooseX-OneArgNew'
 source=('http://search.cpan.org/CPAN/authors/id/R/RJ/RJBS/MooseX-OneArgNew-0.002.tar.gz')
 md5sums=('7bd6f8b873427967bc0cd55f14ede3ea')
 sha512sums=('5b95a1fc2d223847742d1c37c5d9a987228b6f3122f6e13950e297821fbcfec7e2a8f47098e4c06e200d526ecf04b715fba1d99136f8aaffa03df2425bdf01b9')
-_distdir="${srcdir}/MooseX-OneArgNew-0.002"
+_pkg_dir="MooseX-OneArgNew-${pkgver}"
 
 build() {
-  ( export PERL_MM_USE_DEFAULT=1 PERL5LIB=""                 \
+  export PERL_MM_USE_DEFAULT=1 PERL5LIB=""                 \
       PERL_AUTOINSTALL=--skipdeps                            \
       PERL_MM_OPT="INSTALLDIRS=vendor DESTDIR='$pkgdir'"     \
       PERL_MB_OPT="--installdirs vendor --destdir '$pkgdir'" \
       MODULEBUILDRC=/dev/null
 
-    cd "$_distdir"
-    /usr/bin/perl Makefile.PL
-    make
-  )
+  cd "${srcdir}/${_pkg_dir}"
+  /usr/bin/perl Makefile.PL || return 1
+  make || return 1
 }
 
 check() {
-  cd "$_distdir"
-  ( export PERL_MM_USE_DEFAULT=1 PERL5LIB=""
-    make test
-  )
+  cd "${srcdir}/${_pkg_dir}"
+  export PERL_MM_USE_DEFAULT=1 PERL5LIB="" HARNESS_OPTIONS=j10
+  make test || return 1
 }
 
 package() {
-  cd "$_distdir"
-  make install
-  find "$pkgdir" -name .packlist -o -name perllocal.pod -delete
+  cd "${srcdir}/${_pkg_dir}"
+  make install || return 1
+  find "$pkgdir" -name perllocal.pod -delete
 }
 
 # Local Variables:
