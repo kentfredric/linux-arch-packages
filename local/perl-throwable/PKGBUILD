@@ -14,32 +14,30 @@ url='http://search.cpan.org/dist/Throwable'
 source=('http://search.cpan.org/CPAN/authors/id/R/RJ/RJBS/Throwable-0.102080.tar.gz')
 md5sums=('f048e133a92eab91a1975001d2a55a38')
 sha512sums=('098365cb1d7e0ecb90ec0a3074eda779fe58240e0024f5ed6b3f0d713d871ff1282044984635ef49eed55e3a3097110743d9fa844e1351db77b4bcbd3b2255d1')
-_distdir="${srcdir}/Throwable-0.102080"
+_pkg_dir="Throwable-${pkgver}"
 
 build() {
-  ( export PERL_MM_USE_DEFAULT=1 PERL5LIB=""                 \
-      PERL_AUTOINSTALL=--skipdeps                            \
-      PERL_MM_OPT="INSTALLDIRS=vendor DESTDIR='$pkgdir'"     \
-      PERL_MB_OPT="--installdirs vendor --destdir '$pkgdir'" \
-      MODULEBUILDRC=/dev/null
+  export PERL_MM_USE_DEFAULT=1 PERL5LIB=""                 \
+    PERL_AUTOINSTALL=--skipdeps                            \
+    PERL_MM_OPT="INSTALLDIRS=vendor DESTDIR='$pkgdir'"     \
+    PERL_MB_OPT="--installdirs vendor --destdir '$pkgdir'" \
+    MODULEBUILDRC=/dev/null
 
-    cd "$_distdir"
-    /usr/bin/perl Makefile.PL
-    make
-  )
+  cd "${srcdir}/${_pkg_dir}"
+  /usr/bin/perl Makefile.PL || return 1
+  make || return 1
 }
 
 check() {
-  cd "$_distdir"
-  ( export PERL_MM_USE_DEFAULT=1 PERL5LIB=""
-    make test
-  )
+  cd "${srcdir}/${_pkg_dir}"
+  export PERL_MM_USE_DEFAULT=1 PERL5LIB="" HARNESS_OPTIONS=j10
+  make test || return 1
 }
 
 package() {
-  cd "$_distdir"
+  cd "${srcdir}/${_pkg_dir}"
   make install
-  find "$pkgdir" -name .packlist -o -name perllocal.pod -delete
+  find "$pkgdir" -name perllocal.pod -delete
 }
 
 # Local Variables:
