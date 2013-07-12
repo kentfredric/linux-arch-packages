@@ -14,9 +14,9 @@ url='http://search.cpan.org/dist/String-Flogger'
 source=('http://search.cpan.org/CPAN/authors/id/R/RJ/RJBS/String-Flogger-1.101241.tar.gz')
 md5sums=('42668540d4720f1b78efae39c255c33e')
 sha512sums=('5b833f5f3e3d40d76900dccc6eaef2013b961cd1468e975a3f8b0a98d50d92b52e66de6f4f505497ad43793f60e0d28bbca5d7a85baa9daa1da5b3dd985ac29e')
-_distdir="${srcdir}/String-Flogger-1.101241"
 
 build() {
+  _distdir="${srcdir}/String-Flogger-1.101241"
   ( export PERL_MM_USE_DEFAULT=1 PERL5LIB=""                 \
       PERL_AUTOINSTALL=--skipdeps                            \
       PERL_MM_OPT="INSTALLDIRS=vendor DESTDIR='$pkgdir'"     \
@@ -30,16 +30,18 @@ build() {
 }
 
 check() {
+  _distdir="${srcdir}/String-Flogger-1.101241"
   cd "$_distdir"
-  ( export PERL_MM_USE_DEFAULT=1 PERL5LIB=""
+  ( export PERL_MM_USE_DEFAULT=1 PERL5LIB="" HARNESS_OPTIONS=j10
     make test
   )
 }
 
 package() {
+  _distdir="${srcdir}/String-Flogger-1.101241"
   cd "$_distdir"
   make install
-  find "$pkgdir" -name .packlist -o -name perllocal.pod -delete
+  find "$pkgdir" -name perllocal.pod -delete
 }
 
 # Local Variables:
