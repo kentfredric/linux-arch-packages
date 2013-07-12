@@ -3,7 +3,7 @@
 # PKGBUILD Version history: https://github.com/ChimeraCoder/PKGBUILDS
 
 pkgname='perl-autobox'
-pkgver='2.77'
+pkgver='2.79'
 pkgrel='1'
 pkgdesc="call methods on native types"
 arch=('any')
@@ -13,10 +13,11 @@ depends=('perl-scope-guard>=0.20')
 makedepends=()
 url='http://search.cpan.org/dist/autobox'
 source=("http://search.cpan.org/CPAN/authors/id/C/CH/CHOCOLATE/autobox-${pkgver}.tar.gz")
-md5sums=('c26f258bb1239b772c0ced094cbe75fc')
-_distdir="${srcdir}/autobox-${pkgver}"
+md5sums=('4718107ac4359e4300d913cc56b3e14b')
+_pkg_dir="autobox-${pkgver}"
 
 build() {
+  _distdir="${srcdir}/${_pkg_dir}"
   ( export PERL_MM_USE_DEFAULT=1 PERL5LIB=""                 \
       PERL_AUTOINSTALL=--skipdeps                            \
       PERL_MM_OPT="INSTALLDIRS=vendor DESTDIR='$pkgdir'"     \
@@ -30,16 +31,16 @@ build() {
 }
 
 check() {
-  cd "$_distdir"
-  ( export PERL_MM_USE_DEFAULT=1 PERL5LIB=""
+  cd "${srcdir}/${_pkg_dir}"
+  ( export PERL_MM_USE_DEFAULT=1 PERL5LIB="" HARNESS_OPTIONS=j10
     make test
   )
 }
 
 package() {
-  cd "$_distdir"
+  cd "${srcdir}/${_pkg_dir}"
   make install
-  find "$pkgdir" -name .packlist -o -name perllocal.pod -delete
+  find "$pkgdir" -name perllocal.pod -delete
 }
 
 # Local Variables:
