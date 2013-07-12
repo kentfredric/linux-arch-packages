@@ -1,0 +1,49 @@
+# Contributor: chimeracoder <dev@chimeracoder.net>
+# Generator  : CPANPLUS::Dist::Arch 1.19
+
+pkgname='perl-sub-exporter-globexporter'
+pkgver='0.002'
+pkgrel='1'
+pkgdesc="export shared globs with Sub::Exporter collectors"
+arch=('any')
+license=('PerlArtistic' 'GPL')
+options=('!emptydirs')
+depends=('perl-sub-exporter')
+makedepends=()
+url='http://search.cpan.org/dist/Sub-Exporter-GlobExporter'
+source=('http://search.cpan.org/CPAN/authors/id/R/RJ/RJBS/Sub-Exporter-GlobExporter-0.002.tar.gz')
+md5sums=('4bcfa6535ac03fae36428af8e56bbf7a')
+sha512sums=('f73befe983050bbf7b0f416925a4bf059ad1c6531168f1810794b1e1e0e25c62fad9700dcbd2f1187f7c327585440b81abedcd74d5da9ffd1aed0bd738a517d1')
+_distdir="${srcdir}/Sub-Exporter-GlobExporter-0.002"
+
+build() {
+  ( export PERL_MM_USE_DEFAULT=1 PERL5LIB=""                 \
+      PERL_AUTOINSTALL=--skipdeps                            \
+      PERL_MM_OPT="INSTALLDIRS=vendor DESTDIR='$pkgdir'"     \
+      PERL_MB_OPT="--installdirs vendor --destdir '$pkgdir'" \
+      MODULEBUILDRC=/dev/null
+
+    cd "$_distdir"
+    /usr/bin/perl Makefile.PL
+    make
+  )
+}
+
+check() {
+  cd "$_distdir"
+  ( export PERL_MM_USE_DEFAULT=1 PERL5LIB=""
+    make test
+  )
+}
+
+package() {
+  cd "$_distdir"
+  make install
+  find "$pkgdir" -name .packlist -o -name perllocal.pod -delete
+}
+
+# Local Variables:
+# mode: shell-script
+# sh-basic-offset: 2
+# End:
+# vim:set ts=2 sw=2 et:
