@@ -13,7 +13,7 @@ pkgname='[% arch.pkgname %]'
 # normalised version
 pkgver='[% arch.pkgver %]'
 
-pkgrel='1'
+pkgrel='2'
 pkgdesc="disables multidimensional array emulation"
 arch=('i686' 'x86_64')
 license=('PerlArtistic' 'GPL')

@@ -21,7 +21,7 @@ pkgname='perl-multidimensional'
 # normalised version
 pkgver='0.011'
 
-pkgrel='1'
+pkgrel='2'
 pkgdesc="disables multidimensional array emulation"
 arch=('i686' 'x86_64')
 license=('PerlArtistic' 'GPL')
