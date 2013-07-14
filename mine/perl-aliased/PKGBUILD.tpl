@@ -1,25 +1,18 @@
+__[ data ]__
+{
+  cpan_distname => 'aliased'      =>,
+  cpan_author   => OVID           =>,
+  cpan_version  => '0.31'         =>,
+  pkgver        => '0.310'        =>,
+}
+__[ template ]__
 # Maintainer : Kent Fredric <kentnl@cpan.org>
 
-# {
-#  pkgname => perl-aliased
-#  pkgver => 0.310
-#  cpan_distname => aliased
-#  cpan_author => OVID
-#  cpan_version => 0.31
-#  author_first => O
-#  author_first_two => OV
-#  tar_suffix => .tar.gz
-#  tar_filename => aliased-0.31.tar.gz
-#  tar_dirname => aliased-0.31
-#  primary_mirror => http://search.cpan.org/CPAN/authors/id
-#  primary_src => http://search.cpan.org/CPAN/authors/id/O/OV/OVID/aliased-0.31.tar.gz
-#  metacpan_release => https://metacpan.org/release/aliased
-# }
+[% arch.describe %]
 
-
-pkgname='perl-aliased'
+pkgname='[% arch.pkgname %]'
 # normalised version
-pkgver='0.310'
+pkgver='[% arch.pkgver %]'
 
 pkgrel='2'
 pkgdesc="Use shorter versions of class names."
@@ -30,8 +23,8 @@ depends=('perl')
 makedepends=('perl-test-simple' 'perl-module-build>=0.400')
 optdepends=()
 
-url="https://metacpan.org/release/aliased"
-source=("http://search.cpan.org/CPAN/authors/id/O/OV/OVID/aliased-0.31.tar.gz")
+url="[% arch.metacpan_release %]"
+source=("[% arch.primary_src %]")
 changelog="ChangeLog"
 sha512sums=('3a90100ff85f97bc682d423dc32991c98f7637dd2c14156cf189be437ec7be0b689ea04e12283ad050e0ff854aa76a71a3a977161567fac01e9b7ddffe5b6ccd')
 
@@ -45,7 +38,7 @@ _env_setup(){
     PERL_MB_OPT="--installdirs vendor --destdir '$pkgdir'" \
     MODULEBUILDRC=/dev/null     \
     HARNESS_OPTIONS=j10         \
-    PROJ_ROOT="${srcdir}/aliased-0.31"
+    PROJ_ROOT="${srcdir}/[% arch.tar_dirname %]"
   cd "$PROJ_ROOT" || return 1;
 }
 
