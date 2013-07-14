@@ -1,51 +1,63 @@
-# Maintainer: Konrad Borowski <glitchmr@myopera.com>
+# Maintainer : Kent Fredric <kentnl@cpan.org>
 
 pkgname=perl-aliased
-pkgver=0.31
+# normalised to 3dp
+pkgver=0.310
+
+_cpan_distname=aliased
+_cpan_author_aname=OVID
+_cpan_version=0.31
+
+_cpan_author_a=${_cpan_author_aname:0:1}
+_cpan_author_aa=${_cpan_author_aname:0:2}
+_tar_filename="${_cpan_distname}-${_cpan_version}.tar.gz"
+_tar_dirname="${_cpan_distname}-${_cpan_version}"
+
 pkgrel=1
 pkgdesc="Use shorter versions of class names."
-arch=(any)
-license=(PerlArtistic GPL)
-options=(!emptydirs)
-depends=(perl)
-makedepends=('perl-module-build>=0.4000')
-url=https://metacpan.org/release/aliased
-source=("http://search.cpan.org/CPAN/authors/id/O/OV/OVID/aliased-${pkgver}.tar.gz")
-md5sums=('869a73038bd769b5528ac81c326162f2')
+arch=('any')
+license=('PerlArtistic' 'GPL')
+options=('!emptydirs')
+depends=('perl')
+makedepends=('perl-test-simple' 'perl-module-build>=0.400')
+optdepends=()
+url="https://metacpan.org/release/${_cpan_distname}"
+source=("http://search.cpan.org/CPAN/authors/id/${_cpan_author_a}/${_cpan_author_aa}/${_cpan_author_aname}/${_cpan_distname}-${_cpan_version}.tar.gz")
+changelog="ChangeLog"
 sha512sums=('3a90100ff85f97bc682d423dc32991c98f7637dd2c14156cf189be437ec7be0b689ea04e12283ad050e0ff854aa76a71a3a977161567fac01e9b7ddffe5b6ccd')
 
-_env_setup() {
-    export PERL_MM_USE_DEFAULT=1 PERL5LIB=""                 \
-      PERL_AUTOINSTALL=--skipdeps                            \
-      PERL_MM_OPT="INSTALLDIRS=vendor DESTDIR='$pkgdir'"     \
-      PERL_MB_OPT="--installdirs vendor --destdir '$pkgdir'" \
-      MODULEBUILDRC=/dev/null _distdir="${srcdir}/aliased-${pkgver}"
+_env_setup(){
+  export \
+    PERL=/usr/bin/perl          \
+    PERL_MM_USE_DEFAULT=1       \
+    PERL5LIB=""                 \
+    PERL_AUTOINSTALL=--skipdeps \
+    PERL_MM_OPT="INSTALLDIRS=vendor DESTDIR='$pkgdir'"     \
+    PERL_MB_OPT="--installdirs vendor --destdir '$pkgdir'" \
+    MODULEBUILDRC=/dev/null     \
+    HARNESS_OPTIONS=j10         \
+    PROJ_ROOT="${srcdir}/${_tar_dirname}"
+  cd "$PROJ_ROOT" || return 1;
 }
 
 build() {
-    _env_setup;
-    cd "$_distdir"
-    /usr/bin/perl Build.PL
-    ./Build
+  _env_setup                || return 1;
+  $PERL Build.PL && ./Build || return 1
 }
 
-check()
-(
-    _env_setup;
-    export HARNESS_OPTIONS=j10
-    cd "$_distdir"
-    ./Build test
-)
+check() {
+  _env_setup || return 1;
+  ./Build test  || return 1
+}
 
 package() {
-    _env_setup;
-    cd "$_distdir"
-    ./Build install
-    find "$pkgdir" -name perllocal.pod -delete
+  _env_setup   || return 1;
+  ./Build pure_install || return 1;
+  find "$pkgdir" -name perllocal.pod -delete
 }
 
 # Local Variables:
 # mode: shell-script
-# sh-basic-offset: 
+# sh-basic-offset: 2
 # End:
 # vim:set ts=2 sw=2 et:

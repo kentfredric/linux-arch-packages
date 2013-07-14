@@ -1,0 +1,8 @@
+2013-07-14 Kent Fredric <kentnl@cpan.org>
+
+	* 0.310-1 :
+		Module Adoption.
+		Versions normalised to multiple of 3 decimals
+		Guts overhauled/modernised to work
+		Changelog Added.
+
