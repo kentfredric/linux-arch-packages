@@ -1,25 +1,17 @@
+__[ data ]__
+{
+  cpan_distname => multidimensional       =>,
+  cpan_author   => ILMARI                 =>,
+  cpan_version  => 0.011                  =>,
+}
+__[ template ]__
 # Maintainer : Kent Fredric <kentnl@cpan.org>
 
-# {
-#  pkgname => perl-multidimensional
-#  pkgver => 0.011
-#  cpan_distname => multidimensional
-#  cpan_author => ILMARI
-#  cpan_version => 0.011
-#  author_first => I
-#  author_first_two => IL
-#  tar_suffix => .tar.gz
-#  tar_filename => multidimensional-0.011.tar.gz
-#  tar_dirname => multidimensional-0.011
-#  primary_mirror => http://search.cpan.org/CPAN/authors/id
-#  primary_src => http://search.cpan.org/CPAN/authors/id/I/IL/ILMARI/multidimensional-0.011.tar.gz
-#  metacpan_release => https://metacpan.org/release/multidimensional
-# }
+[% arch.describe %]
 
-
-pkgname='perl-multidimensional'
+pkgname='[% arch.pkgname %]'
 # normalised version
-pkgver='0.011'
+pkgver='[% arch.pkgver %]'
 
 pkgrel='1'
 pkgdesc="disables multidimensional array emulation"
@@ -29,8 +21,8 @@ options=('!emptydirs')
 depends=('perl' 'perl-b-hooks-op-check>=0.19' 'perl-lexical-sealrequirehints>=0.005' 'perl-xsloader')
 makedepends=('perl-test-simple>=0.88' 'perl-extutils-makemaker>=6.30' 'perl-extutils-depends' 'perl-cpan-meta>=2.112580')
 optdepends=()
-url="https://metacpan.org/release/multidimensional"
-source=("http://search.cpan.org/CPAN/authors/id/I/IL/ILMARI/multidimensional-0.011.tar.gz")
+url="[% arch.metacpan_release %]"
+source=("[% arch.primary_src %]")
 changelog="ChangeLog"
 sha512sums=('8e121388b1325b6cfb73a74a9655f28ce52059096a9a8326bbe743cf663523812f3d171c1cf5d1b4841b98ec57c4240130d6def3e064e809db1d1bd4c4510081')
 
@@ -44,7 +36,7 @@ _env_setup(){
     PERL_MB_OPT="--installdirs vendor --destdir '$pkgdir'" \
     MODULEBUILDRC=/dev/null     \
     HARNESS_OPTIONS=j10         \
-    PROJ_ROOT="${srcdir}/multidimensional-0.011"
+    PROJ_ROOT="${srcdir}/[% arch.tar_dirname %]"
   cd "$PROJ_ROOT" || return 1;
 }
 
