@@ -1,25 +1,17 @@
+__[ data ]__
+{
+  cpan_distname => 'bareword-filehandles' =>,
+  cpan_author   => ILMARI                 =>,
+  cpan_version  => '0.003'                =>,
+}
+__[ template ]__
 # Maintainer : Kent Fredric <kentnl@cpan.org>
 
-# {
-#  pkgname => perl-bareword-filehandles
-#  pkgver => 0.003
-#  cpan_distname => bareword-filehandles
-#  cpan_author => ILMARI
-#  cpan_version => 0.003
-#  author_first => I
-#  author_first_two => IL
-#  tar_suffix => .tar.gz
-#  tar_filename => bareword-filehandles-0.003.tar.gz
-#  tar_dirname => bareword-filehandles-0.003
-#  primary_mirror => http://search.cpan.org/CPAN/authors/id
-#  primary_src => http://search.cpan.org/CPAN/authors/id/I/IL/ILMARI/bareword-filehandles-0.003.tar.gz
-#  metacpan_release => https://metacpan.org/release/bareword-filehandles
-# }
+[% arch.describe %]
 
-
-pkgname='perl-bareword-filehandles'
+pkgname='[% arch.pkgname %]'
 # normalised version
-pkgver='0.003'
+pkgver='[% arch.pkgver %]'
 
 pkgrel='2'
 pkgdesc="disables bareword filehandles"
@@ -30,8 +22,8 @@ depends=('perl' 'perl-b-hooks-op-check' 'perl-lexical-sealrequirehints' 'perl-xs
 makedepends=('perl-test-simple>=0.88' 'perl-extutils-depends' 'perl-extutils-makemaker>=6.31')
 checkdepends=()
 optdepends=()
-url='https://metacpan.org/release/bareword-filehandles'
-source=('http://search.cpan.org/CPAN/authors/id/I/IL/ILMARI/bareword-filehandles-0.003.tar.gz')
+url='[% arch.metacpan_release %]'
+source=('[% arch.primary_src %]')
 changelog='ChangeLog'
 sha512sums=('184c37f737a638a3cfad7657b39918a2aff862faa7c84ef965cc9f2a7c157b05eac732807a0ebb1de44a0ce76b72a96016a126cbba658cddd8230f3de6ab5d8b')
 
@@ -45,7 +37,7 @@ _env_setup(){
     PERL_MB_OPT="--installdirs vendor --destdir '$pkgdir'" \
     MODULEBUILDRC=/dev/null     \
     HARNESS_OPTIONS=j10         \
-    PROJ_ROOT="${srcdir}/bareword-filehandles-0.003"
+    PROJ_ROOT="${srcdir}/[% arch.tar_dirname %]"
   cd "$PROJ_ROOT" || return 1;
 }
 
