@@ -14,7 +14,6 @@ url='http://search.cpan.org/dist/Software-License'
 source=("http://search.cpan.org/CPAN/authors/id/R/RJ/RJBS/Software-License-${pkgver}.tar.gz")
 md5sums=('e3d40a7306fb5b2ecc128f9def17b46c')
 sha512sums=('a3f00b81d94634f06bca2dd4337d602345bdc36dd57b976204e5a1243a1cc380fac93038bc2c397d42caf010c5a52be688f44e08207b11bb5e961e13b06c7efb')
-_distdir="${srcdir}/Software-License-0.103004"
 
 build() {
   ( export PERL_MM_USE_DEFAULT=1 PERL5LIB=""                 \
@@ -22,6 +21,7 @@ build() {
       PERL_MM_OPT="INSTALLDIRS=vendor DESTDIR='$pkgdir'"     \
       PERL_MB_OPT="--installdirs vendor --destdir '$pkgdir'" \
       MODULEBUILDRC=/dev/null
+_distdir="${srcdir}/Software-License-0.103005"
 
     cd "$_distdir"
     /usr/bin/perl Makefile.PL
@@ -30,6 +30,8 @@ build() {
 }
 
 check() {
+_distdir="${srcdir}/Software-License-0.103005"
+
   cd "$_distdir"
   ( export PERL_MM_USE_DEFAULT=1 PERL5LIB=""
     make test
@@ -37,6 +39,8 @@ check() {
 }
 
 package() {
+_distdir="${srcdir}/Software-License-0.103005"
+
   cd "$_distdir"
   make install
   find "$pkgdir" -name .packlist -o -name perllocal.pod -delete
