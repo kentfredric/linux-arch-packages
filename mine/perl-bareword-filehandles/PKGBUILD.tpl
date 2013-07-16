@@ -16,7 +16,11 @@ Lexical::SealRequireHints 0
 XSLoader 0
 __[ template ]__
 # Maintainer : Kent Fredric <kentnl@cpan.org>
-
+# Note: This file is generated from a template with a little instrumentation
+#       to avoid weird quirks of bash occurring with advanced substitution.
+#       For ease of maintenance, please modify the source file PKGBUILD.tpl
+#       https://github.com/kentfredric/linux-arch-packages/tree/master/mine
+#
 [% arch.describe %]
 
 pkgrel='2'
