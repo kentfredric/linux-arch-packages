@@ -1,0 +1,10 @@
+2013-07-12 Kent Fredric <kentnl@cpan.org>
+
+	* 2.200003-3 :
+	Greatly improved templated controlled dependencies
+
+	* 2.200003-2 :
+	Maintainer transferral and code updated to work with
+		recent makepkg.
+	Stop stripping .packlist files
+

@@ -1,42 +1,71 @@
 # Maintainer : Kent Fredric <kentnl@cpan.org>
-pkgname='perl-config-mvp'
-pkgver='2.200003'
-pkgrel='2'
-pkgdesc="multivalue-property package-oriented configuration"
+# Note: This file is generated from a template with a little instrumentation
+#       to avoid weird quirks of bash occurring with advanced substitution.
+#       For ease of maintenance, please modify the source file PKGBUILD.tpl
+#       https://github.com/kentfredric/linux-arch-packages/tree/master/mine
+#
+# {
+#  pkgname => perl-config-mvp
+#  pkgver => 2.200003
+#  cpan_distname => Config-MVP
+#  cpan_author => RJBS
+#  cpan_version => 2.200003
+#  author_first => R
+#  author_first_two => RJ
+#  tar_suffix => .tar.gz
+#  tar_filename => Config-MVP-2.200003.tar.gz
+#  tar_dirname => Config-MVP-2.200003
+#  primary_mirror => http://search.cpan.org/CPAN/authors/id
+#  primary_src => http://search.cpan.org/CPAN/authors/id/R/RJ/RJBS/Config-MVP-2.200003.tar.gz
+#  metacpan_release => https://metacpan.org/release/Config-MVP
+# }
+
+
+pkgrel='3'
+pkgdesc='multivalue-property package-oriented configuration'
+sha512sums=('8e8fe73501b782d2a488e0bf50b39567f8b0de1eb3f389d618027fd954cb3272f39e1d9414b125d6be807807e6505571fccf511ea0534abcb3540ad881bcdd5d')
 arch=('any')
 license=('PerlArtistic' 'GPL')
-options=('!emptydirs')
-depends=('perl-class-load>=0.17' 'perl-moose>=0.91' 'perl-moosex-oneargnew' 'perl-params-util' 'perl-role-hasmessage' 'perl-role-identifiable' 'perl-throwable' 'perl-tie-ixhash' 'perl-try-tiny')
-makedepends=('perl-test-fatal')
-url='http://search.cpan.org/dist/Config-MVP'
-source=("http://search.cpan.org/CPAN/authors/id/R/RJ/RJBS/Config-MVP-$pkgver.tar.gz")
-md5sums=('33180fb21bd91bb74545168336576a1c')
-sha512sums=('8e8fe73501b782d2a488e0bf50b39567f8b0de1eb3f389d618027fd954cb3272f39e1d9414b125d6be807807e6505571fccf511ea0534abcb3540ad881bcdd5d')
-_pkg_dir="Config-MVP-${pkgver}"
 
-_distdir="${srcdir}/Config-MVP-$pkgver"
+pkgname='perl-config-mvp'
+# normalised version
+pkgver='2.200003'
+options=('!emptydirs')
+optdepends=()
+url='https://metacpan.org/release/Config-MVP'
+source=('http://search.cpan.org/CPAN/authors/id/R/RJ/RJBS/Config-MVP-2.200003.tar.gz')
+
+changelog='ChangeLog'
+
+depends=('perl' 'perl-class-load>=0.17' 'perl-module-pluggable' 'perl-moose' 'perl-moose>=0.91' 'perl-moosex-oneargnew' 'perl-params-util' 'perl-role-hasmessage' 'perl-role-identifiable' 'perl-test-simple>=0.88' 'perl-throwable' 'perl-tie-ixhash' 'perl-try-tiny')
+makedepends=('perl-extutils-makemaker>=6.30')
+checkdepends=('perl-file-temp' 'perl-test-fatal' 'perl-test-simple>=0.96')
+
+_env_setup(){
+  export                        \
+    PERL=/usr/bin/perl          \
+    PERL_MM_USE_DEFAULT=1       \
+    PERL5LIB=""                 \
+    PERL_AUTOINSTALL=--skipdeps \
+    PERL_MM_OPT="INSTALLDIRS=vendor DESTDIR='$pkgdir'" \
+    PERL_MB_OPT="--installdirs vendor --destdir '$pkgdir'" \
+    MODULEBUILDRC=/dev/null \
+    HARNESS_OPTIONS=j10     \
+    PROJ_ROOT="${srcdir}/Config-MVP-2.200003"
+  cd "$PROJ_ROOT" || return 1;
+}
 
 build() {
-  export PERL_MM_USE_DEFAULT=1 PERL5LIB=""                 \
-    PERL_AUTOINSTALL=--skipdeps                            \
-    PERL_MM_OPT="INSTALLDIRS=vendor DESTDIR='$pkgdir'"     \
-    PERL_MB_OPT="--installdirs vendor --destdir '$pkgdir'" \
-    MODULEBUILDRC=/dev/null
-
-  cd "${srcdir}/${_pkg_dir}"
-  /usr/bin/perl Makefile.PL || return 1
-  make || return 1
+  _env_setup || return 1;
+  $PERL Makefile.PL && make || return 1;
 }
-
 check() {
- cd "${srcdir}/${_pkg_dir}"
- export PERL_MM_USE_DEFAULT=1 PERL5LIB="" HARNESS_OPTIONS=j10
- make test || return 1
+  _env_setup || return 1;
+  make test || return 1;
 }
-
 package() {
-  cd "${srcdir}/${_pkg_dir}"
-  make install
+  _env_setup || return 1;
+  make install || return 1;
   find "$pkgdir" -name perllocal.pod -delete
 }
 
