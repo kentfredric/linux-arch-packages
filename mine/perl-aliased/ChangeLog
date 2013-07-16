@@ -1,4 +1,6 @@
 2013-07-14 Kent Fredric <kentnl@cpan.org>
+	
+		Lots more templatey goodness with deps.
 
 	* 0.310-2 :
 		Improved PKGBUILD by using a template instead with a little perl glue
