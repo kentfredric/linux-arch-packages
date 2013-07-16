@@ -1,36 +1,76 @@
-# Maintainer: Kent Fredric <kentnl@cpan.org>
-# Previous Maintainer: Petrenko Alexey <alexey-p at uralweb dot ru>
-pkgname=perl-devel-nytprof
-pkgver=5.05
+# Maintainer : Kent Fredric <kentnl@cpan.org>
+# Note: This file is generated from a template with a little instrumentation
+#       to avoid weird quirks of bash occurring with advanced substitution.
+#       For ease of maintenance, please modify the source file PKGBUILD.tpl
+#       https://github.com/kentfredric/linux-arch-packages/tree/master/mine
+#
+# {
+#  pkgname => perl-devel-nytprof
+#  pkgver => 5.050
+#  cpan_distname => Devel-NYTProf
+#  cpan_author => TIMB
+#  cpan_version => 5.05
+#  author_first => T
+#  author_first_two => TI
+#  tar_suffix => .tar.gz
+#  tar_filename => Devel-NYTProf-5.05.tar.gz
+#  tar_dirname => Devel-NYTProf-5.05
+#  primary_mirror => http://search.cpan.org/CPAN/authors/id
+#  primary_src => http://search.cpan.org/CPAN/authors/id/T/TI/TIMB/Devel-NYTProf-5.05.tar.gz
+#  metacpan_release => https://metacpan.org/release/Devel-NYTProf
+# }
+
+
 pkgrel=1
 pkgdesc='Powerful fast feature-rich perl source code profiler'
-url='https://metacpan.org/release/Devel-NYTProf'
-depends=('perl' 'perl-json-any' 'perl-getopt-long' 'perl-test-simple>=0.84' 'perl-xsloader' 'perl-test-differences>=0.60')
-makedepends=('perl-extutils-makemaker')
+sha512sums=('ca2e5c0410a701ced306258dd8f6cce7e71d0a3c63660cfdd30493a678ed6bf81c7c65b83a155be1baa6fc5cc339fee69c38b4f90d7f15e872dc88df97ef874f')
 arch=('i686' 'x86_64')
 license=('GPL')
+
+pkgname='perl-devel-nytprof'
+# normalised version
+pkgver='5.050'
 options=('!emptydirs')
-source=("http://cpan.metacpan.org/authors/id/T/TI/TIMB/Devel-NYTProf-$pkgver.tar.gz")
-sha1sums=('92b1d093e5eed09852735bf14c9e25115884d20e')
+optdepends=()
+url='https://metacpan.org/release/Devel-NYTProf'
+source=('http://search.cpan.org/CPAN/authors/id/T/TI/TIMB/Devel-NYTProf-5.05.tar.gz')
+
+changelog='ChangeLog'
+
+depends=('perl' 'perl-getopt-long' 'perl-json-any' 'perl-scalar-list-utils' 'perl-test-differences>=0.60' 'perl-test-simple>=0.84' 'perl-xsloader')
+makedepends=('perl-extutils-makemaker')
+checkdepends=()
+
+_env_setup(){
+  export                        \
+    PERL=/usr/bin/perl          \
+    PERL_MM_USE_DEFAULT=1       \
+    PERL5LIB=""                 \
+    PERL_AUTOINSTALL=--skipdeps \
+    PERL_MM_OPT="INSTALLDIRS=vendor DESTDIR='$pkgdir'" \
+    PERL_MB_OPT="--installdirs vendor --destdir '$pkgdir'" \
+    MODULEBUILDRC=/dev/null \
+    HARNESS_OPTIONS=j10     \
+    PROJ_ROOT="${srcdir}/Devel-NYTProf-5.05"
+  cd "$PROJ_ROOT" || return 1;
+}
+
 build() {
-  cd "$srcdir/Devel-NYTProf-$pkgver"
-
-  perl Makefile.PL INSTALLDIRS=vendor || return 1
-  make || return 1
+  _env_setup || return 1;
+  $PERL Makefile.PL && make || return 1;
 }
-
 check() {
-  cd "$srcdir/Devel-NYTProf-$pkgver"
-  HARNESS_OPTIONS=j10 make test || return 1
+  _env_setup || return 1;
+  make test || return 1;
 }
-
 package() {
-  cd "$srcdir/Devel-NYTProf-$pkgver"
-
-  make DESTDIR="$pkgdir" install || return 1
-
-  # Removing unnecessary stuff
-  find "$pkgdir" -type f \
-	-name 'perllocal.pod' \
-	 -delete;
+  _env_setup || return 1;
+  make install || return 1;
+  find "$pkgdir" -name perllocal.pod -delete
 }
+
+# Local Variables:
+# mode: shell-script
+# sh-basic-offset: 2
+# End:
+# vim:set ts=2 sw=2 et:
