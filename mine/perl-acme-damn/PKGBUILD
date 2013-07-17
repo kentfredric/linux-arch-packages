@@ -1,0 +1,28 @@
+# Maintainer: Kent Fredric <kentnl@cpan.org>
+# Previous Maintainer: yugrotavele <yugrotavele at archlinux dot us>
+
+_perl_distname=Acme-Damn
+_perl_author=IBB
+_perl_version=0.05
+pkgdesc="'Unbless' Perl objects"
+depends=('perl')
+checkdepends=('perl-test-exception' 'perl-test-simple')
+
+pkgname=perl-acme-damn
+url="https://metacpan.org/release/$_perl_distname"
+license=('PerlArtistic' 'GPL')
+source=(
+	"http://cpan.metacpan.org/authors/id/I/IB/IBB/${_perl_distname}-${_perl_version}.tar.gz"
+	"perlmod.sh"
+)
+
+source "$(dirname $srcdir)/perlmod.sh";
+
+pkgver=0.05
+pkgrel=3
+arch=('i686' 'x86_64')
+
+options=(!emptydirs)
+
+sha1sums=('5eb4bb27642ed12d8219362cf9027694d631ef3c'
+          '1bfeb36289429b784c461d02c2ab0cd690c0ca8c')
